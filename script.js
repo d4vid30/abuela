@@ -7,6 +7,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('image-modal');
   const modalImg = document.getElementById('modal-img');
   const closeModal = document.querySelector('.modal .close');
+  const leftArrow = document.querySelector('.arrow.left');
+  const rightArrow = document.querySelector('.arrow.right');
 
   // Crear estrellas por toda la página
   for (let i = 0; i < 80; i++) {
@@ -48,9 +50,39 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function showModal(index) {
     modal.style.display = 'flex';
-    modalImg.src = zoomables[index].src;
+    // Si es imagen
+    if (zoomables[index].tagName === 'IMG') {
+      modalImg.style.display = 'block';
+      modalImg.src = zoomables[index].src;
+    } else if (zoomables[index].tagName === 'VIDEO') {
+      // Si es video, mostrar el video en el modal
+      modalImg.style.display = 'none';
+      if (!document.getElementById('modal-video')) {
+        const video = zoomables[index].cloneNode(true);
+        video.id = 'modal-video';
+        video.style.maxWidth = '90vw';
+        video.style.maxHeight = '80vh';
+        video.style.borderRadius = '12px';
+        video.style.display = 'block';
+        modal.appendChild(video);
+      }
+    }
+    // Eliminar video anterior si no es video
+    if (zoomables[index].tagName !== 'VIDEO') {
+      const oldVideo = document.getElementById('modal-video');
+      if (oldVideo) oldVideo.remove();
+    }
     currentIndex = index;
   }
+
+  leftArrow.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + zoomables.length) % zoomables.length;
+    showModal(currentIndex);
+  });
+  rightArrow.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % zoomables.length;
+    showModal(currentIndex);
+  });
 
   zoomables.forEach((img, idx) => {
     img.addEventListener('click', () => {
@@ -58,7 +90,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Navegar con flechas
+  // Navegar con flechas del teclado
   document.addEventListener('keydown', e => {
     if (modal.style.display === 'flex') {
       if (e.key === 'ArrowRight') {
@@ -76,6 +108,8 @@ window.addEventListener('DOMContentLoaded', () => {
   // Cerrar modal
   closeModal.addEventListener('click', () => {
     modal.style.display = 'none';
+    const oldVideo = document.getElementById('modal-video');
+    if (oldVideo) oldVideo.remove();
   });
 
   // Cerrar con ESC
