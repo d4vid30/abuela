@@ -42,12 +42,35 @@ window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => emoji.remove(), 2000);
   });
 
-  // Mostrar imagen ampliada
-  document.querySelectorAll('.zoomable').forEach(img => {
+  // Mostrar imagen ampliada y navegación
+  const zoomables = Array.from(document.querySelectorAll('.zoomable'));
+  let currentIndex = -1;
+
+  function showModal(index) {
+    modal.style.display = 'flex';
+    modalImg.src = zoomables[index].src;
+    currentIndex = index;
+  }
+
+  zoomables.forEach((img, idx) => {
     img.addEventListener('click', () => {
-      modal.style.display = 'flex';
-      modalImg.src = img.src;
+      showModal(idx);
     });
+  });
+
+  // Navegar con flechas
+  document.addEventListener('keydown', e => {
+    if (modal.style.display === 'flex') {
+      if (e.key === 'ArrowRight') {
+        currentIndex = (currentIndex + 1) % zoomables.length;
+        showModal(currentIndex);
+      }
+      if (e.key === 'ArrowLeft') {
+        currentIndex = (currentIndex - 1 + zoomables.length) % zoomables.length;
+        showModal(currentIndex);
+      }
+      if (e.key === 'Escape') modal.style.display = 'none';
+    }
   });
 
   // Cerrar modal
