@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Emoji en movimiento por toda la página (mejorado)
   document.addEventListener('mousemove', e => {
-    const emojis = ['🎂'];
+    const emojis = ['🎉'];
     const emoji = document.createElement('div');
     emoji.className = 'emoji';
     emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
