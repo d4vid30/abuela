@@ -161,8 +161,26 @@ body {
   cursor: pointer;
 }
 
+#music-controls {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #ba68c8;
+  padding: 10px 0;
+  text-align: center;
+  z-index: 100;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+}
+#music-controls audio {
+  width: 300px;
+  max-width: 90vw;
+  border-radius: 8px;
+  outline: none;
+}
+
 @media (max-width: 768px) {
   .gallery img { width: 45%; }
   .hero-title { font-size: 3rem; }
   .message-container { padding: 20px; }
-} 
+}
